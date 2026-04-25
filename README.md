@@ -3,7 +3,7 @@
 ![SAS](https://img.shields.io/badge/SAS-9.4%20%2F%20Viya-blue)
 ![R](https://img.shields.io/badge/R-%3E%3D%204.0-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Status](https://img.shields.io/badge/Status-Completed-success)
+[![Université Paris Cité](https://img.shields.io/badge/Université-Paris%20Cité-red)](https://u-paris.fr/)
 
 -----
 ## Présentation du projet
