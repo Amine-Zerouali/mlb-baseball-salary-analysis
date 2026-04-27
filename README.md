@@ -10,7 +10,7 @@
 Ce projet propose une étude approfondie des déterminants des salaires des joueurs de la Ligue Majeure de Baseball (MLB) en 1992. À l'aide de statistiques de performance de la saison 1991, nous cherchons à quantifier l'impact de la réussite sportive face aux barrières et opportunités contractuelles (agence libre, arbitrage). 
 
 Ce travail a été réalisé dans le cadre de la Licence 3 pour l'UE **"Outils pour la Data Science"** à l'Université Paris Cité.
------
+----- 
 ## Technologies & Méthodologie
 Le projet suit une approche rigoureuse inspirée des travaux de **Watnik (1998)** et des manuels de référence de **Neter et al.** et **Christensen**.
 
