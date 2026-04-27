@@ -296,7 +296,7 @@ Le salaire brut présente une distribution fortement asymétrique à droite (Ske
 Afin de pallier l'asymétrie du salaire, nous appliquons une transformation
 logarithmique : $\texttt{LogSalary} = \ln(\texttt{Salary})$. Cette transformation, classique pour des variables de revenus strictement positives et très étalées, produit une distribution nettement plus symétrique (Skewness $= -0.07$, quasi nulle).\vspace{0.3cm}
 
-Cependant, les tests formels de normalité restent significatifs au seuil de 5\,\% même après transformation (Shapiro-Wilk : $W = 0.934$, $p < 0.0001$ ; Kolmogorov-Smirnov : $D = 0.102$, $p < 0.01$). Le graphique Q-Q (figure~\ref{fig:qq_logsalary}) révèle que l'écart à la normalité provient essentiellement des queues : les très petits salaires (plancher syndical) forment un palier en bas, et quelques super-stars créent une légère déviation en haut. Pour la modélisation par régression linéaire, la log-transformation reste justifiée car elle améliore substantiellement l'adéquation du modèle et l'homoscédasticité des résidus.
+Cependant, les tests formels de normalité restent significatifs au seuil de 5\,\% même après transformation (Shapiro-Wilk : $W = 0.934$, $p < 0.0001$ ; Kolmogorov-Smirnov : $D = 0.102$, $p < 0.01$). Le graphique Q-Q (figure~\ref{fig:qq_logsalary}) révèle que l'écart à la normalité provient essentiellement des queues : les très petits salaires (plancher syndical) forment un palier en bas, et quelques super-stars créent une légère déviation en haut. Pour la modélisation par régression linéaire, la log-transformation reste justifiée car elle améliore nettement l’ajustement du modèle et rend les résidus plus homogènes.
 
 \begin{figure}[H]
   \centering
@@ -468,15 +468,14 @@ LogSalary $\sim$ Batting\_avg & 0.266 & 0.071 & $<0.0001$ & $+$ \\
 \end{tabular}
 \end{table}
 
-\noindent\textit{Note : les $R^2$ sont calculés directement à partir des corrélations de
-Pearson ($R^2 = r^2$) et confirmés par PROC REG.}
+
 
 La variable \textbf{Hits} est la meilleure variable explicative simple ($R^2 = 0.446$) :
 elle explique près de 45\,\% de la variance du log-salaire. Ce résultat est cohérent
 avec l'interprétation des auteurs du jeu de données, qui considèrent \texttt{Hits}
 comme un proxy du temps de jeu effectif. En revanche, la moyenne au bâton
 (\texttt{Batting\_avg}) est un mauvais prédicteur ($R^2 = 0.071$) : la qualité
-intrinsèque du joueur est moins valorisée que sa présence sur le terrain.
+intrinsèque du joueur est moins valorisée que sa présence sur le terrain.\footnote{Les $R^2$ sont calculés à partir des corrélations de Pearson ($R^2 = r^2$) et confirmés par PROC REG.}
 
 \subsection{Analyse du modèle retenu : LogSalary $\sim$ Hits}
 
@@ -494,12 +493,7 @@ un joueur passant de 100 à 150 coups sûrs voit son salaire multiplié par
 $e^{50 \times 0.01513} \approx 2.1$.
 
 \paragraph{Diagnostics (figure~\ref{fig:diag_reg}).}
-Le graphique des résidus en fonction des valeurs prédites révèle une légère
-hétéroscédasticité : la dispersion des résidus est plus importante pour les
-valeurs prédites faibles (joueurs peu actifs), ce qui est attendu car le
-modèle peine à distinguer les contrats au plancher syndical. Le Q-Q plot
-des résidus montre une bonne adéquation à la normalité sur la partie centrale,
-avec quelques écarts dans les queues (outliers).
+Le graphique des résidus en fonction des valeurs prédites montre une légère variation de la dispersion : les résidus sont plus étalés pour les petites valeurs prédites (joueurs peu actifs). C’est assez logique, car le modèle a du mal à différencier les contrats proches du minimum syndical. Le graphique Q-Q indique que les résidus suivent globalement une distribution normale au centre, avec quelques écarts aux extrémités (valeurs atypiques).
 
 \begin{figure}[H]
   \centering
@@ -509,25 +503,29 @@ avec quelques écarts dans les queues (outliers).
 \end{figure}
 
 \paragraph{Détection des outliers.}
-Le tableau~\ref{tab:outliers} présente les 6 joueurs dont le résidu positif
+Le tableau~\ref{tab:outliers} présente les 10 joueurs dont le résidu positif
 est le plus élevé, c'est-à-dire ceux dont le salaire dépasse le plus la
 prédiction basée sur leurs coups sûrs.
 
 \begin{table}[H]
 \centering
-\caption{Top 6 joueurs surpayés par rapport à leurs coups sûrs}
+\caption{Top 10 joueurs surpayés par rapport à leurs coups sûrs}
 \label{tab:outliers}
 \small
 \begin{tabular}{lrrrr}
 \toprule
 \textbf{Joueur} & \textbf{LogSalary} & \textbf{Prévision} & \textbf{Résidu} & \textbf{Hits} \\
 \midrule
-Andre Dawson    & 8.102 & 7.445 & 0.657 & 153 \\
-Steve Buchele   & 7.863 & 6.810 & 1.053 & 111 \\
-Kal Daniels     & 7.825 & 6.871 & 0.954 & 115 \\
-Shawon Dunston  & 7.814 & 7.068 & 0.747 & 128 \\
-Mark Grace      & 7.746 & 6.869 & 0.877 & 169 \\
+Andre Dawson    & 8.102 & 7.446 & 0.656    & 153 \\
+Steve Buchele   & 7.863 & 6.810 & 1.053    & 111 \\
+Kal Daniels     & 7.824 & 6.871 & 0.953    & 115 \\
+Shawon Dunston  & 7.814 & 7.068 & 0.746    & 128 \\
+Mark Grace      & 7.746 & 7.688 & 0.058    & 169 \\
 Ryne Sandberg   & 7.685 & 7.703 & $-0.018$ & 170 \\
+Luis Salazar    & 6.397 & 6.432 & $-0.035$ & 86  \\
+Dwight Smith    & 6.131 & 5.706 & 0.426    & 38  \\
+Doug Dascenzo   & 5.481 & 6.054 & $-0.573$ & 61  \\
+Sammy Sosa      & 5.298 & 6.099 & $-0.801$ & 64  \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -537,7 +535,7 @@ palmarès justifient un salaire supérieur à ce que leurs statistiques de 1991
 laissent prévoir : Andre Dawson (MVP 1987) et Ryne Sandberg (futur Hall of
 Fame) illustrent bien ce phénomène. À l'inverse, les résidus négatifs
 correspondent à de jeunes joueurs encore sous contrat restreint, tels que
-Sammy Sosa (résidu $= -0.807$, 64 coups sûrs) en début de carrière.
+Sammy Sosa (résidu $= -0.801$, 64 coups sûrs) en début de carrière.
 
 % =============================================================================
 \section{Régression multiple}
@@ -817,16 +815,9 @@ CAH révèle trois profils de joueurs bien distincts titulaires réguliers, remp
 et profils atypiques efficaces mais peu utilisés dont les niveaux de salaire sont
 parfaitement ordonnés.\vspace{0.3cm}
 
-Ces résultats sont cohérents avec la littérature en économie du sport et permettent
-de comprendre pourquoi l'Association des joueurs a pu obtenir gain de cause dans le
-grief concernant la sous-rémunération des agents libres en 1991/92 : la régression
-multiple met en évidence un coefficient négatif pour les agents libres récents,
-attestant d'une entente implicite entre clubs.\vspace{0.3cm}
+Ces résultats sont cohérents avec la littérature en économie du sport et permettent de mieux comprendre pourquoi l’Association des joueurs a obtenu gain de cause dans le litige concernant la sous-rémunération des agents libres en 1991/92 : la régression multiple met en évidence un coefficient négatif pour les agents libres récents, ce qui suggère l’existence d’une entente implicite entre clubs.\vspace{0.3cm}
 
-Pour des travaux futurs, il serait pertinent d'intégrer les données de plusieurs
-saisons consécutives afin d'étudier l'évolution des salaires, ou d'utiliser des
-méthodes non linéaires (forêts aléatoires, boosting) pour améliorer le pouvoir
-prédictif du modèle.\vspace{1cm}
+Pour de futurs travaux, il serait pertinent d’intégrer des données couvrant plusieurs saisons consécutives afin d’étudier l’évolution des salaires, ou encore d’utiliser des méthodes non linéaires (forêts aléatoires, boosting) pour améliorer les performances prédictives du modèle.\vspace{1cm}
 
 % =============================================================================
 \begin{thebibliography}{9}
