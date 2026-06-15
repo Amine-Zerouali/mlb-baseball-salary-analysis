@@ -47,7 +47,7 @@ Le projet suit une approche rigoureuse inspirée des travaux de **Watnik (1998)*
 3. Pour R : Ouvrez le projet et lancez le script `.R`. Les chemins sont configurés pour être relatifs au répertoire de travail.
 -----
 ## Auteurs
-* **AIT MESSAOUD Mohamed Said**
+* **Atigui Mohamed**
 * **TAKENNE MEKEM Simeon**
 * **ZEROUALI Amine**
 
